@@ -1,0 +1,63 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.0.0'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+repositories {
+    mavenCentral()
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = false
+}
+
+group 'com.planet.destiny'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+}
+
+
+allprojects {
+    group 'com.planet.destiny'
+    version '1.0-SNAPSHOT'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    ext {
+        set('springCloudVersion', "2022.0.0-RC2")
+    }
+
+    // Spring Cloud 버전 관리
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+
+
+    repositories {
+        /** 가장 기본 메이븐 레파지토리 */
+        mavenCentral()
+
+        /* spring cloud 최신버전을 위해서 사용 */
+        maven { url 'https://repo.spring.io/milestone' }
+
+        /*Eureka dependency*/
+        maven { url 'https://artifactory-oss.prod.netflix.net/artifactory/maven-oss-candidates' }
+
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_19
+    targetCompatibility = JavaVersion.VERSION_19
+}
