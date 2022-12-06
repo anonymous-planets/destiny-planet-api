@@ -1,3 +1,4 @@
 rootProject.name = 'destiny-planet-api'
 include 'destiny-planet-config-server'
 include 'destiny-planet-discovery-server'
+include 'destiny-planet-gateway-server'
