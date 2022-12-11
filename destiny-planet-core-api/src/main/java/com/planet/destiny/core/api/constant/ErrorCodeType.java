@@ -4,15 +4,15 @@ import org.springframework.http.HttpStatus;
 
 public interface ErrorCodeType {
 
-    public String getName();
+    String getName();
 
-    public HttpStatus getStatus();
+    HttpStatus getStatus();
 
-    public String getCode();
+    String getCode();
 
-    public String getTitle();
+    String getTitle();
 
-    public String getMessage();
+    String getMessage();
 
-    public String getAlertMessage();
+    String getAlertMessage();
 }
