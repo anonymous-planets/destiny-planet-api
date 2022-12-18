@@ -45,13 +45,15 @@ public class JwtAuthenticationGatewayFilter extends AbstractGatewayFilterFactory
              * Request Header에 Authorization 존재 여부 확인
              */
             if(!containsAuthorization(request)) {
-                return onError(
+                return jwtTokenProvider.onError(
                         response
-                        , "[Gateway] Header정보에 Authorization필드가 존재 하지 않습니다."
+                        , "실패"
                         , SimpleRestResponse.ErrorSet.builder()
-                                .error("NonExistAuthorization Field")
-                                .errorCode("C001")
-                                .errorMessage("잘못된 요청입니다.")
+                                        .name("Bad Request")
+                                        .code("C001")
+                                        .title("[Gateway] Header정보에 Authorization필드가 존재 하지 않습니다.")
+                                        .message("Header정보에 Authorization 필드가 존재 하지 않습니다.")
+                                        .alertMessage("정보가 만료 되었습니다. 다시 로그인 해주세요.")
                                 .path(request.getPath().value())
                                 .build()
                         , HttpStatus.BAD_REQUEST
@@ -63,13 +65,15 @@ public class JwtAuthenticationGatewayFilter extends AbstractGatewayFilterFactory
              */
             String accessToken = extractAccessToken(request);
             if(!StringUtils.hasText(accessToken)) {
-                return onError(
+                return jwtTokenProvider.onError(
                         response
-                        , "[Gateway] Header정보에 있는 Authorization필드에 AccessToken 값이 존재 하지 않습니다."
+                        , "실패"
                         , SimpleRestResponse.ErrorSet.builder()
-                                .error("UNAUTHORIZED")
-                                .errorCode("C001")
-                                .errorMessage("잘못된 요청입니다.")
+                                        .name("Bad Request")
+                                        .code("C001")
+                                        .title("[Gateway] Header정보에 있는 Authorization필드에 AccessToken 값이 존재 하지 않습니다.")
+                                        .message("Header에 AccessToken이 존재 하지 않습니다.")
+                                        .alertMessage("정보가 만료 되었습니다. 다시 로그인 해주세요.")
                                 .path(request.getPath().value())
                                 .build()
                         , HttpStatus.UNAUTHORIZED
@@ -79,15 +83,17 @@ public class JwtAuthenticationGatewayFilter extends AbstractGatewayFilterFactory
             /**
              * AccessToken 정보 Validation
              */
-            Map<String, String> errorMap = jwtTokenProvider.accessTokenValidation(accessToken);
+            Map<String, String> errorMap = jwtTokenProvider.validationToken(accessToken);
             if(errorMap != null) {
-                return onError(
+                return jwtTokenProvider.onError(
                         response
                         , errorMap.get("message")
                         , SimpleRestResponse.ErrorSet.builder()
-                                .error(errorMap.get("error"))
-                                .errorCode(errorMap.get("errorCode"))
-                                .errorMessage(errorMap.get("errorMessage"))
+                                .name(errorMap.get("name"))
+                                .code(errorMap.get("code"))
+                                .title(errorMap.get("title"))
+                                .message(errorMap.get("message"))
+                                .alertMessage(errorMap.get("alertMessage"))
                                 .path(request.getPath().value())
                                 .build()
                         , HttpStatus.BAD_REQUEST
@@ -139,30 +145,6 @@ public class JwtAuthenticationGatewayFilter extends AbstractGatewayFilterFactory
                 .header("X-Authorization-Role", role)
                 .build()
         ;
-    }
-
-    private Mono<Void> onError(ServerHttpResponse response, String message, SimpleRestResponse.ErrorSet error, HttpStatus status) {
-        // StatusCode값 설정
-        response.setStatusCode(status);
-        // Content-Type 설정
-        response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-
-        DataBuffer buffer = null;
-        try{
-            buffer = response.bufferFactory().wrap(new ObjectMapper().writeValueAsBytes(SimpleRestResponse.error(message, error)));
-            return response.writeWith(Mono.just(buffer));
-        }catch(Exception e) {
-            e.printStackTrace();
-            return response.writeWith(Mono.just(buffer));
-        }
-    }
-
-    private byte[] defaultError() throws IOException {
-        try(ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(bos)) {
-            oos.writeObject(SimpleRestResponse.error("", null));
-            return bos.toByteArray();
-        }
     }
 
     public static class Config {

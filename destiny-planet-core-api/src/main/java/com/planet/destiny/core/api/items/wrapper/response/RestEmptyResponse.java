@@ -1,6 +1,7 @@
 package com.planet.destiny.core.api.items.wrapper.response;
 
 
+import com.planet.destiny.core.api.constant.ErrorCodeType;
 import com.planet.destiny.core.api.constant.ResultCode;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -43,7 +44,7 @@ public class RestEmptyResponse<T> extends RestResponseBase<RestEmptyResponse<T>>
      * @return
      * @param <T>
      */
-    public static <T extends Serializable> RestEmptyResponse<T> error(String message, ErrorSet<T> error) {
+    public static <T extends Serializable, E extends ErrorCodeType> RestEmptyResponse<T> error(String message, ErrorSet<T, E> error) {
         return new RestEmptyResponse<T>(ResultCode.ERROR, message, error);
     }
 

@@ -17,7 +17,7 @@ spring:
             AwEHoUQDQgAEKWWUJmzvbweI7TRtn6Zgs2K630fnw8u6dJQp9GRoH4EhU00qzT6M
             m6Tqi/XRdzX7yPj9NbNM2/f03XzUCA800g==
             -----END EC PRIVATE KEY-----
-          search-paths: destiny-planet-discovery-server, destiny-planet-gateway-server, destiny-planet-auth-service, destiny-planet-member-service
+          search-paths: destiny-planet-discovery-server,destiny-planet-gateway-server,destiny-planet-auth-service,destiny-planet-member-service
           default-label: main
           skip-ssl-validation: true
           ignore-local-ssh-settings: true

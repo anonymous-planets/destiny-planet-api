@@ -32,17 +32,23 @@ public class SimpleRestResponse implements Serializable {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class ErrorSet implements Serializable {
 
-        private String error;                   // Error 이름
-        private String errorCode;               // Error 코드
-        private String errorMessage;            // Error 메시지
-        private String path;                    // 요청 URL
+        private String name;
+        private String code;
+        private String title;
+        private String message;
+        private String alertMessage;
+        private String path;
+
 
         @Builder
-        public ErrorSet(String error, String errorCode, String errorMessage, String path) {
-            this.error = error;
-            this.errorCode = errorCode;
-            this.errorMessage = errorMessage;
+        public ErrorSet(String name, String code, String title, String message, String alertMessage, String path) {
+            this.name = name;
+            this.code = code;
+            this.title = title;
+            this.message = message;
+            this.alertMessage = alertMessage;
             this.path = path;
         }
+
     }
 }

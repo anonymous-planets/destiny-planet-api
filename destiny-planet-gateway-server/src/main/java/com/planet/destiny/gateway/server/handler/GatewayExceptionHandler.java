@@ -26,21 +26,24 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
         SimpleRestResponse error = null;
 
         if(ex.getClass() == NotFoundException.class) {
-          error = SimpleRestResponse.error("[Gateway] API 정보를 찾을 수 없습니다."
+          error = SimpleRestResponse.error("실패"
                   , SimpleRestResponse.ErrorSet.builder()
-                                  .error(HttpStatus.NOT_FOUND.name())
-                                  .errorCode("C401")
-                                  .errorMessage("정보를 찾을 수 없습니다.")
+                                  .name(HttpStatus.NOT_FOUND.name())
+                                  .code("C401")
+                                  .title("[Gateway] API 정보를 찾을 수 없습니다.")
+                                  .message("잘못된 API 주소 입니다.")
                                   .path(request.getPath().value())
                           .build()
           );
           response.setStatusCode(HttpStatus.NOT_FOUND);
         } else {
-            error = SimpleRestResponse.error("[Gateway] 알 수 없는 오류가 발생했습니다."
+            error = SimpleRestResponse.error("실패"
                     , SimpleRestResponse.ErrorSet.builder()
-                                    .error(HttpStatus.INTERNAL_SERVER_ERROR.name())
-                                    .errorCode("S001")
-                                    .errorMessage("서버에 에러가 발생 했습니다.")
+                                    .name(HttpStatus.INTERNAL_SERVER_ERROR.name())
+                                    .code("S001")
+                                    .title("[Gateway] 알 수 없는 오류가 발생했습니다.")
+                                    .message("서버에서 알수 없는 에러가 발생 했습니다.")
+                                    .alertMessage("잠시 후 다시 시도해주세요.")
                                     .path(request.getPath().value())
                             .build()
             );

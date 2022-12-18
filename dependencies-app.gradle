@@ -1,6 +1,11 @@
 repositories {
     /** 가장 기본 메이븐 레파지토리 */
     mavenCentral();
+    /* spring cloud 최신버전을 위해서 사용 */
+    maven { url 'https://repo.spring.io/milestone' }
+
+    /*Eureka dependency*/
+    maven { url 'https://artifactory-oss.prod.netflix.net/artifactory/maven-oss-candidates' }
 
     dependencies {
         // spring boot basic
@@ -40,6 +45,12 @@ repositories {
         implementation 'org.springframework.boot:spring-boot-starter-webflux'
         implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
 
+        // JWT 관련 의존성
+        implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+        runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+        runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+
         /**
          * Spring Cloud Config
          */
@@ -67,7 +78,6 @@ repositories {
         /**
          * Spring Cloud 기타 사용
          */
-
         implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
 
         // Spring Cloud Starter Actuator
