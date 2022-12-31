@@ -2,6 +2,7 @@ package com.planet.destiny.core.api.exception;
 
 import com.planet.destiny.core.api.constant.ErrorCode;
 import com.planet.destiny.core.api.constant.ErrorCodeType;
+import com.planet.destiny.core.api.items.wrapper.response.ErrorSet;
 
 public class BusinessException extends RuntimeException {
 

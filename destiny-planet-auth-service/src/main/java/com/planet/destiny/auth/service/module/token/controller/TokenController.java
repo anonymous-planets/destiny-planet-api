@@ -28,9 +28,6 @@ public class TokenController {
         if(StringUtils.isEmpty(reqDto.getRefreshToken())) {
             throw new TokenNotExistsException("refreshToken이 존재 하지 않습니다.", "문제가 발생했습니다. 다시 로그인해주세요.");
         }
-
         return ResponseEntity.status(HttpStatus.OK).body(tokenService.adminTokenReissue(reqDto));
-
     }
-
 }

@@ -40,6 +40,7 @@ public class SecurityContextFilter extends OncePerRequestFilter {
             UserDetails principal = new User(memberId, "", authorities);
             SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(principal, "", authorities));
         }
+        filterChain.doFilter(request, response);
     }
 
     /**

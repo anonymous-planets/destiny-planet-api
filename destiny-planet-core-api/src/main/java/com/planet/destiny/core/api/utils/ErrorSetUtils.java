@@ -7,10 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 
 public class ErrorSetUtils {
-    public static RestEmptyResponse makeRestEmptyResponse(BusinessException e, HttpServletRequest request) {
-        return RestEmptyResponse.error(e.getMessage(), makeErrorSet(e, request));
-    }
-
     public static ErrorSet makeErrorSet(BusinessException e, HttpServletRequest request) {
         return ErrorSet.builder()
                 .errorCode(e.getErrorCode())

@@ -48,6 +48,10 @@ public class RestEmptyResponse<T> extends RestResponseBase<RestEmptyResponse<T>>
         return new RestEmptyResponse<T>(ResultCode.ERROR, message, error);
     }
 
+    public static <T extends Serializable, E extends ErrorCodeType> RestEmptyResponse<T> error(ErrorSet<T, E> error) {
+        return new RestEmptyResponse<>(ResultCode.ERROR, ResultCode.ERROR.getDesc(), error);
+    }
+
     @Override
     public RestEmptyResponse<T> message(String message) {
         super.message = message;

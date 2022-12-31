@@ -1,7 +1,7 @@
 package com.planet.destiny.auth.service.configuration;
 
-import com.planet.destiny.core.api.config.security.AccessDeniedHandler;
-import com.planet.destiny.core.api.config.security.AuthenticationEntryPoint;
+import com.planet.destiny.core.api.config.security.CustomAccessDeniedHandler;
+import com.planet.destiny.core.api.config.security.CustomAuthenticationEntryPoint;
 import com.planet.destiny.core.api.filter.SecurityContextFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +15,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration {
-    private final AccessDeniedHandler accessDeniedHandler;
-    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
-    public SecurityConfiguration(final AccessDeniedHandler accessDeniedHandler, final AuthenticationEntryPoint authenticationEntryPoint) {
+    public SecurityConfiguration(final CustomAccessDeniedHandler accessDeniedHandler, final CustomAuthenticationEntryPoint authenticationEntryPoint) {
         this.accessDeniedHandler = accessDeniedHandler;
         this.authenticationEntryPoint = authenticationEntryPoint;
     }
@@ -36,11 +36,16 @@ public class SecurityConfiguration {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeHttpRequests()
-                .requestMatchers("/v1/api/signin", "/v1/api/signup", "/v1/api/token/**/re-issue").permitAll()   // FIXME : re-issue는 필인증 없도록 설정 필요
-                .anyRequest().authenticated() // 나머지 API는 전부 인증 필요
+                //
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/v1/api/token/admin/re-issue"     // 토큰 재발급
+                                ,"/v1/api/login/**"                                 // 로그인
+                                , "/v1/api/**/members"                              // 회원가입
+                        ).anonymous()
+                        .anyRequest().authenticated()
+                )
+
                 // Exception Handling
-                .and()
                 .exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandler)
                 .authenticationEntryPoint(authenticationEntryPoint)

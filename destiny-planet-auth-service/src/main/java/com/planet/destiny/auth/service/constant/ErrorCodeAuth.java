@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public enum ErrorCodeAuth implements ErrorCodeType {
 
-    BAD_REQUEST(HttpStatus.BAD_REQUEST, "C001", "잘못된 요청입니다.", "잘못된 요청입니다, API주소, Reqest데이터를 확인해주세요.", "문제가 발생했습니다. 잠시 후 다시 시도해주세요.")
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "C000", "잘못된 요청입니다.", "잘못된 요청입니다, API주소, Reqest데이터를 확인해주세요.", "문제가 발생했습니다. 잠시 후 다시 시도해주세요.")
     , TOKEN_ERROR(HttpStatus.BAD_REQUEST, "C0001", "토큰이 잘못되었습니다.", "잘못된 토큰입니다. 다시 로그인 요청 해주세요.", "문제가 발생했습니다. 다시 로그인 해주세요.")
     , TOKEN_NOT_EXISTS(HttpStatus.BAD_REQUEST, "C002", "토큰이 존재 하지 않습니다.", "토큰이 존재 하지 않습니다. 다시 로그인 요청 해주세요.", "문제가 발생했습니다. 다시 로그인해주세요.")
     , TOKEN_ILLEGAL(HttpStatus.BAD_REQUEST, "C003", "해당 토큰은 잘못 된 토큰입니다.", "잘못된 토큰입니다. 다시 로그인 요청 해주세요.", "문제가 발생했습니다. 다시 로그인해주세요.")
