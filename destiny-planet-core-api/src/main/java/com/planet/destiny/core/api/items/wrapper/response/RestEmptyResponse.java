@@ -16,6 +16,7 @@ public class RestEmptyResponse<T> extends RestResponseBase<RestEmptyResponse<T>>
 
     private RestEmptyResponse(ResultCode resultCode, String message, ErrorSet error) {
         super.resultCode = resultCode;
+        super.resultMessage = resultCode.getDesc();
         super.message = message;
         super.error = error;
     }
@@ -25,7 +26,7 @@ public class RestEmptyResponse<T> extends RestResponseBase<RestEmptyResponse<T>>
     }
 
     public static RestEmptyResponse success() {
-        return new RestEmptyResponse(ResultCode.SUCCESS, ResultCode.SUCCESS.getDesc(), null);
+        return new RestEmptyResponse(ResultCode.SUCCESS, "", null);
     }
 
     /**
@@ -34,7 +35,7 @@ public class RestEmptyResponse<T> extends RestResponseBase<RestEmptyResponse<T>>
      * @return
      */
     public static RestEmptyResponse fail(String message) {
-        return new RestEmptyResponse(ResultCode.FAIL, ResultCode.FAIL.getDesc() + " : " + message, null);
+        return new RestEmptyResponse(ResultCode.FAIL, message, null);
     }
 
     /**
@@ -49,7 +50,7 @@ public class RestEmptyResponse<T> extends RestResponseBase<RestEmptyResponse<T>>
     }
 
     public static <T extends Serializable, E extends ErrorCodeType> RestEmptyResponse<T> error(ErrorSet<T, E> error) {
-        return new RestEmptyResponse<>(ResultCode.ERROR, ResultCode.ERROR.getDesc(), error);
+        return new RestEmptyResponse<>(ResultCode.ERROR, "", error);
     }
 
     @Override

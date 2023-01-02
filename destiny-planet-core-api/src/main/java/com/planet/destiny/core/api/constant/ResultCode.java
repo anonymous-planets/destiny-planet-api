@@ -1,5 +1,7 @@
 package com.planet.destiny.core.api.constant;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum ResultCode {
 
     SUCCESS(0, "성공")
@@ -19,6 +21,7 @@ public enum ResultCode {
         return this.name();
     }
 
+    @JsonValue
     public Integer getCode() {
         return this.code;
     }

@@ -8,7 +8,8 @@ import lombok.Getter;
 public abstract class RestResponseBase<T> {
 
     protected ResultCode resultCode;        // 0, -1, -2
-    protected String message;               // 성공, 실패, 에러
+    protected String resultMessage;         // 성공, 실패, 에러
+    protected String message;               // 기타 메시지
     protected Long timestamp = System.currentTimeMillis();
     protected ErrorSet error;
 

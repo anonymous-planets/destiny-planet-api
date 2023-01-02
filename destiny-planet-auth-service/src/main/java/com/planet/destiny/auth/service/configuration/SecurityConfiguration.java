@@ -38,9 +38,9 @@ public class SecurityConfiguration {
                 .and()
                 //
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/v1/api/token/admin/re-issue"     // 토큰 재발급
-                                ,"/v1/api/login/**"                                 // 로그인
-                                , "/v1/api/**/members"                              // 회원가입
+                        .requestMatchers("/v1/api/token/admin/re-issue"    // 토큰 재발급
+                                ,"/v1/api/admin-member/**"                         // 관리자(로그인/회원가입)
+                                , "/v1/api/member/**"                              // 회원(로그인/회원가입)
                         ).anonymous()
                         .anyRequest().authenticated()
                 )

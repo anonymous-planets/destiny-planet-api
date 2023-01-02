@@ -22,7 +22,6 @@ public class TokenController {
 
     private final TokenService tokenService;
 
-
     @PostMapping("/admin/re-issue")
     public ResponseEntity adminTokenReissue(@CookieValue(value="refreshToken")TokenDto.TokenReissueReq reqDto) {
         if(StringUtils.isEmpty(reqDto.getRefreshToken())) {

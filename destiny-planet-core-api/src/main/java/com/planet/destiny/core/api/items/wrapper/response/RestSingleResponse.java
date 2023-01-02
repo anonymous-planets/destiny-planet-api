@@ -17,7 +17,8 @@ public class RestSingleResponse<T extends Serializable> extends RestResponseBase
 
     private RestSingleResponse(ResultCode resultCode, String message) {
         super.resultCode = resultCode;
-        super.message = message == null ? resultCode.getDesc() : message;
+        super.resultMessage = resultCode.getDesc();
+        super.message = message;
     }
 
     public static <T extends Serializable> RestSingleResponse<T> success(String message, T clazz) {
@@ -25,7 +26,7 @@ public class RestSingleResponse<T extends Serializable> extends RestResponseBase
     }
 
     public static <T extends Serializable> RestSingleResponse<T> success(T clazz) {
-        return new RestSingleResponse<T>(ResultCode.SUCCESS, ResultCode.SUCCESS.getDesc()).add(clazz);
+        return new RestSingleResponse<T>(ResultCode.SUCCESS, "").add(clazz);
     }
 
     private RestSingleResponse<T> add(T data) {
