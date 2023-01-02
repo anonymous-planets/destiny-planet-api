@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AdminMemberController {
 
-    private AdminMemberService adminMemberService;
+    private final AdminMemberService adminMemberService;
 
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody AdminMemberDto.LoginReq reqDto) {

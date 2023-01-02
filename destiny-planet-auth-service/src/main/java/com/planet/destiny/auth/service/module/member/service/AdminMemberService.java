@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class AdminMemberService {
 
     public RestSingleResponse<AdminMemberDto.LoginRes> login(AdminMemberDto.LoginReq reqDto) {
-        return null;
+        return RestSingleResponse.success(AdminMemberDto.LoginRes.builder().memberIdx(111L).token(null).build());
     }
 
     public RestEmptyResponse signIn(AdminMemberDto.SignInReq reqDto) {

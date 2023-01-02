@@ -28,10 +28,11 @@ public class AdminMemberDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class LoginRes implements Serializable {
-        private String memberIdx;
+        private Long memberIdx;
         private TokenDto.TokenRes token;
 
-        public LoginRes(String memberIdx, TokenDto.TokenRes token) {
+        @Builder
+        public LoginRes(Long memberIdx, TokenDto.TokenRes token) {
             this.memberIdx = memberIdx;
             this.token = token;
         }
@@ -40,8 +41,6 @@ public class AdminMemberDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class SignInReq extends com.planet.destiny.core.api.module.member.item.AdminMemberDto implements Serializable {
-
-        @Builder
         public SignInReq(String memberId, String name, String password, String passwordConfirm, String phone) {
             super.memberId = memberId;
             super.name = name;
