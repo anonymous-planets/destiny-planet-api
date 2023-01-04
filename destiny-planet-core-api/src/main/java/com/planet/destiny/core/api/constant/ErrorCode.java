@@ -13,7 +13,7 @@ public enum ErrorCode implements ErrorCodeType {
     , NOT_FOUND(HttpStatus.NOT_FOUND, "C401", "정보를 찾을 수 없습니다.", "", "")
     , NOT_FOUND_RESOURCE(HttpStatus.NOT_FOUND, "C402", "자원 정보를 찾을 수 없습니다.", "%s 정보를 찾을 수 없습니다.", "")
     , NOT_FOUND_USER(HttpStatus.NOT_FOUND, "C402", "회원 정보를 찾을 수 없습니다.", "[%s] 회원 정보를 찾을 수 없습니다.", "")
-    , NOT_FOUND_ENUM_VALUE(HttpStatus.NOT_FOUND, "C403", "타입 정보를 찾을 수 없습니다.", "%{1}는 %{2} 에서 지원 하지 않는 값입니다. %{3}", "")
+    , NOT_FOUND_ENUM_VALUE(HttpStatus.NOT_FOUND, "C403", "타입 정보를 찾을 수 없습니다.", "%{0}는 %{1} 에서 지원 하지 않는 값입니다.", "문제가 발생 했습니다. 잠시 후 다시 시도해주세요.<br/>계속 문제가 발생시 로그아웃 후 다시 로그인 해주세요.")
 
     , METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C501", "허용 하지 않는 요청입니다.", "허용하지 않은 Method입니다. API정보를 다시 확인해주세요.", "문제가 발생 했습니다. 잠시 후 다시 시도해주세요.")
 

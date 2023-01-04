@@ -12,11 +12,16 @@ public class TokenDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class TokenReissueReq implements Serializable {
+    public static class TokenIssueReq implements Serializable {
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class TokenReIssueReq implements Serializable {
         private String refreshToken;
 
         @Builder
-        public TokenReissueReq(String refreshToken) {
+        public TokenReIssueReq(String refreshToken) {
             this.refreshToken = refreshToken;
         }
     }
@@ -27,13 +32,14 @@ public class TokenDto {
 
         private String grantType;
 
-        private String accessToken;             // accessToken
+        private String accessToken;
 
-        private Long accessTokenExpiresIn;      // accessToken 만료 일자
+        private Long accessTokenExpiresIn;
 
-        private String refreshToken;            // refreshToken
+        private String refreshToken;
 
-        private Long refreshTokenExpiresIn;     // refreshToken 만료 일자
+        private Long refreshTokenExpiresIn;
+
 
         @Builder
         public TokenRes(String grantType, String accessToken, Long accessTokenExpiresIn, String refreshToken, Long refreshTokenExpiresIn) {
@@ -44,13 +50,13 @@ public class TokenDto {
             this.refreshTokenExpiresIn = refreshTokenExpiresIn;
         }
 
-        public TokenRes setAccessToken(String accessToken, Long accessTokenExpiresIn) {
+        public TokenRes setAccessTokenInfo(String accessToken, Long accessTokenExpiresIn) {
             this.accessToken = accessToken;
             this.accessTokenExpiresIn = accessTokenExpiresIn;
             return this;
         }
 
-        public TokenRes setRefreshToken(String refreshToken, Long refreshTokenExpiresIn) {
+        public TokenRes setRefreshTokenInfo(String refreshToken, Long refreshTokenExpiresIn) {
             this.refreshToken = refreshToken;
             this.refreshTokenExpiresIn = refreshTokenExpiresIn;
             return this;

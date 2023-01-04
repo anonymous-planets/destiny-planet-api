@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component(value = "jwtTokenProvider")
@@ -33,10 +34,10 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public TokenDto.TokenRes createAccessToken(int memberIdx, long now, List<String> roles, TokenDto.TokenRes token) {
+    public TokenDto.TokenRes createAccessToken(Long memberIdx, long now, List<String> roles, TokenDto.TokenRes token) {
         Claims claims = Jwts.claims().setSubject(String.valueOf(memberIdx));
 
-//        claims.put(AUTHORITIES_KEY, roles.stream().collect(Collectors.joining(",")));
+        claims.put(AUTHORITIES_KEY, roles.stream().collect(Collectors.joining(",")));
 
         Date expiration = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
@@ -47,7 +48,7 @@ public class JwtTokenProvider {
                 .compact()
                 ;
 
-        return token.setAccessToken(accessToken, expiration.getTime());
+        return token.setAccessTokenInfo(accessToken, expiration.getTime());
     }
 
     public TokenDto.TokenRes createRefreshToken(long now, TokenDto.TokenRes token) {
@@ -61,6 +62,6 @@ public class JwtTokenProvider {
                 .setExpiration(expiration)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
-        return token.setRefreshToken(refreshToken, expiration.getTime());
+        return token.setRefreshTokenInfo(refreshToken, expiration.getTime());
     }
 }

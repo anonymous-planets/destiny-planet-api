@@ -2,6 +2,7 @@ package com.planet.destiny.auth.service.module.member.service;
 
 
 import com.planet.destiny.auth.service.module.member.item.AdminMemberDto;
+import com.planet.destiny.auth.service.module.token.service.TokenService;
 import com.planet.destiny.core.api.items.wrapper.response.RestEmptyResponse;
 import com.planet.destiny.core.api.items.wrapper.response.RestSingleResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AdminMemberService {
 
+    private final TokenService tokenService;
+
     public RestSingleResponse<AdminMemberDto.LoginRes> login(AdminMemberDto.LoginReq reqDto) {
+
         return RestSingleResponse.success(AdminMemberDto.LoginRes.builder().memberIdx(111L).token(null).build());
     }
 
