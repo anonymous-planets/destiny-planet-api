@@ -33,6 +33,8 @@ public class SimpleRestResponse implements Serializable {
     public static class ErrorSet implements Serializable {
 
         private String name;
+
+        private String serviceName = "destiny-planet-gateway-server";
         private String code;
         private String title;
         private String message;

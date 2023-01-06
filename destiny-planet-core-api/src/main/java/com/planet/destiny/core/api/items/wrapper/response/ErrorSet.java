@@ -34,8 +34,8 @@ public class ErrorSet <T extends Serializable, E extends ErrorCodeType> implemen
 //    }
 
     @Builder
-    public ErrorSet(E errorCode, String serviceName, String title, String message,String alertMessage, String path) {
-        this.name = errorCode.getName();
+    public ErrorSet(E errorCode, String name, String serviceName, String title, String message,String alertMessage, String path) {
+        this.name = name;
         this.code = errorCode.getCode();
         this.serviceName = serviceName;
         this.title = title == null ? errorCode.getTitle() : title;

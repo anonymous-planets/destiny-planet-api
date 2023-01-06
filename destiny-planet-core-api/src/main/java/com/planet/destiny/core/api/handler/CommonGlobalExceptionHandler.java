@@ -33,6 +33,7 @@ public class CommonGlobalExceptionHandler {
                 RestEmptyResponse.error(
                         ErrorSet.builder()
                                 .errorCode(ErrorCode.INTERNAL_SERVER_ERROR)
+                                .name(e.getClass().getSimpleName())
                                 .serviceName(serviceName)
                                 .path(request.getRequestURI())
                                 .build()
@@ -74,6 +75,7 @@ public class CommonGlobalExceptionHandler {
                 RestEmptyResponse.error(
                         ErrorSet.builder()
                                 .errorCode(ErrorCode.BAD_REQUEST)
+                                .name(e.getClass().getSimpleName())
                                 .title("Method Argument Not Valid Exception")
                                 .message(gson.toJson(errorFieldArray))
                                 .alertMessage("")
@@ -91,6 +93,7 @@ public class CommonGlobalExceptionHandler {
                 RestEmptyResponse.error(
                         ErrorSet.builder()
                                 .errorCode(e.getErrorCode())
+                                .name(e.getClass().getSimpleName())
                                 .title(e.getTitle())
                                 .message(e.getMessage())
                                 .alertMessage(e.getAlertMessage())

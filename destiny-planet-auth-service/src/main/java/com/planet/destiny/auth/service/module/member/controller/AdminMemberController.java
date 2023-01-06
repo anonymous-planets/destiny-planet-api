@@ -30,7 +30,7 @@ public class AdminMemberController {
     }
 
     @PostMapping(value = "/sign-in")
-    public ResponseEntity signIn(@RequestBody AdminMemberDto.SignInReq reqDto) {
+    public ResponseEntity signIn(@Validated @RequestBody AdminMemberDto.SignInReq reqDto) {
         return ResponseEntity.ok(adminMemberService.signIn(reqDto));
     }
 }

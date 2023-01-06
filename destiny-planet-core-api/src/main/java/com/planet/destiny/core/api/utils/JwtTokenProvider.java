@@ -1,6 +1,7 @@
 package com.planet.destiny.core.api.utils;
 
 
+import com.planet.destiny.core.api.constant.member.AdminRoleType;
 import com.planet.destiny.core.api.module.token.item.TokenDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -21,7 +23,7 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
 
     public static final String AUTHORITIES_KEY = "role";
-    public static final String GRANT_TYPE = "Bearer";
+    public static final String GRANT_TYPE = "Bearer ";
 
     public static final Long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30L;
 
@@ -34,21 +36,21 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public TokenDto.TokenRes createAccessToken(Long memberIdx, long now, List<String> roles, TokenDto.TokenRes token) {
-        Claims claims = Jwts.claims().setSubject(String.valueOf(memberIdx));
+    public TokenDto.TokenRes createAccessToken(TokenDto.TokenIssueReq reqDto, TokenDto.TokenRes token) {
+        Claims claims = Jwts.claims().setSubject(String.valueOf(reqDto.getMemberIdx()));
 
-        claims.put(AUTHORITIES_KEY, roles.stream().collect(Collectors.joining(",")));
+        claims.put(AUTHORITIES_KEY, reqDto.getRoles().stream().map(item -> item.getName()).collect(Collectors.joining(",")));
 
-        Date expiration = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
+        Date expiration = new Date(reqDto.getCurrentDateTime() + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(new Date(now))     // 발행 일자
+                .setIssuedAt(new Date(reqDto.getCurrentDateTime()))     // 발행 일자
                 .setExpiration(expiration)      // 만료 일자
                 .signWith(key, SignatureAlgorithm.HS512)    // 알고리즘
                 .compact()
                 ;
 
-        return token.setAccessTokenInfo(accessToken, expiration.getTime());
+        return token.setAccessTokenInfo(accessToken, expiration.getTime(), ACCESS_TOKEN_EXPIRE_TIME);
     }
 
     public TokenDto.TokenRes createRefreshToken(long now, TokenDto.TokenRes token) {
@@ -62,6 +64,6 @@ public class JwtTokenProvider {
                 .setExpiration(expiration)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
-        return token.setRefreshTokenInfo(refreshToken, expiration.getTime());
+        return token.setRefreshTokenInfo(refreshToken, expiration.getTime(), REFRESH_TOKEN_EXPIRE_TIME);
     }
 }

@@ -26,7 +26,7 @@ import java.util.Map;
 @Component
 public class JwtTokenProvider {
 
-    private static final String AUTHORITIES_KEY = "role";
+    private static final String AUTHORITIES_KEY = "roles";
     private final Key key;
 
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
@@ -114,7 +114,7 @@ public class JwtTokenProvider {
      * @param accessToken
      * @return
      */
-    public String getRole(String accessToken) {
+    public String getRoles(String accessToken) {
         // fixme: AUTHORITIES_KEY 값이 존재 하지 않을시 toString과정에서 NullPointerException 발생
         return this.parseClaims(accessToken).get(AUTHORITIES_KEY).toString();
     }

@@ -1,5 +1,6 @@
 package com.planet.destiny.core.api.module.member.item;
 
+import com.planet.destiny.core.api.constant.member.StatusType;
 import com.planet.destiny.core.api.module.token.item.TokenDto;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -22,10 +23,10 @@ public class AdminMemberDto implements Serializable {
     protected String password;
     protected String name;
     protected String phone;
-    protected String status;
+    protected StatusType status;
 
     @Builder
-    public AdminMemberDto(Long memberIdx, String memberId, String password, String name, String phone, String status) {
+    public AdminMemberDto(Long memberIdx, String memberId, String password, String name, String phone, StatusType status) {
         this.memberIdx = memberIdx;
         this.memberId = memberId;
         this.password = password;

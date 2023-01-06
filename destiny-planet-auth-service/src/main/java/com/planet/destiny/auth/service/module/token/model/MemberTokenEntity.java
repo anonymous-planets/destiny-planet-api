@@ -1,15 +1,13 @@
 package com.planet.destiny.auth.service.module.token.model;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.Generated;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -23,10 +21,11 @@ import java.util.Date;
 public class MemberTokenEntity implements Serializable {
 
     @Id
-    private Integer idx;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idx;
 
     @Column(name = "member_idx", columnDefinition = "INT NOT NULL COMMENT '회원 index'")
-    private Integer memberIdx;
+    private Long memberIdx;
 
     @Column(name = "refresh_token", columnDefinition = "VARCHAR(200) NOT NULL COMMENT 'REFRESH TOKEN'")
     private String refreshToken;
@@ -38,21 +37,21 @@ public class MemberTokenEntity implements Serializable {
     private Date refreshTokenExpireDateTime;
 
     @Column(name = "creator_idx", columnDefinition = "INT NOT NULL COMMENT '생성자 INDEX'")
-    private Integer creator;
+    private Long creator;
 
     @Column(name = "created_date_time", columnDefinition = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일자'")
     private Date createdDateTime;
 
     @Column(name = "modifier_idx", columnDefinition = "INT NOT NULL COMMENT '수정자'")
-    private Integer modifier;
+    private Long modifier;
 
     @Column(name = "modified_date_time", columnDefinition = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '수정일자'")
     private Date modifiedDateTime;
 
     @Builder
-    public MemberTokenEntity(Integer idx, Integer memberIdx, String refreshToken
-            , Integer refreshTokenExpireTime, Date refreshTokenExpireDateTime, Integer creator
-            , Date createdDateTime, Integer modifier, Date modifiedDateTime) {
+    public MemberTokenEntity(Long idx, Long memberIdx, String refreshToken
+            , Integer refreshTokenExpireTime, Date refreshTokenExpireDateTime, Long creator
+            , Date createdDateTime, Long modifier, Date modifiedDateTime) {
         this.idx = idx;
         this.memberIdx = memberIdx;
         this.refreshToken = refreshToken;

@@ -29,15 +29,15 @@ public class SecurityContextFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String memberId = resolveHeader(AUTHORIZATION_ID__HEADER, request);
-        String role = resolveHeader(AUTHORIZATION_ROLE_HEADER, request);
+        String memberIdx = resolveHeader(AUTHORIZATION_ID__HEADER, request);
+        String roles = resolveHeader(AUTHORIZATION_ROLE_HEADER, request);
 
-        if(StringUtils.hasText(memberId) && StringUtils.hasText(role)) {
+        if(StringUtils.hasText(String.valueOf(memberIdx)) && StringUtils.hasText(roles)) {
             // SecurityContextHolder에 인증정보 저장
-            Collection<? extends GrantedAuthority> authorities = Arrays.stream(role.split(","))
+            Collection<? extends GrantedAuthority> authorities = Arrays.stream(roles.split(","))
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
-            UserDetails principal = new User(memberId, "", authorities);
+            UserDetails principal = new User(memberIdx, "", authorities);
             SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(principal, "", authorities));
         }
         filterChain.doFilter(request, response);

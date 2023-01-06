@@ -1,11 +1,10 @@
 package com.planet.destiny.core.api.constant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.planet.destiny.core.api.exception.BusinessException;
 import com.planet.destiny.core.api.exception.NotFoundEnumValueException;
-import com.planet.destiny.core.api.exception.NotFoundException;
 import com.planet.destiny.core.api.utils.StringUtils;
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 public enum YesNoType implements LegacyType {
 
@@ -37,7 +36,7 @@ public enum YesNoType implements LegacyType {
     }
 
     @JsonCreator
-    public static YesNoType create(String value) throws NotFoundException {
+    public static YesNoType create(String value) throws NotFoundEnumValueException {
         if(StringUtils.isEmpty(value)) {
             throw new NotFoundEnumValueException(YesNoType.class.getSimpleName());
         }
@@ -49,10 +48,11 @@ public enum YesNoType implements LegacyType {
         throw new NotFoundEnumValueException(value, YesNoType.class.getSimpleName());
     }
 
+    @Converter
     public static class YesNoTypeAttributeConverter implements AttributeConverter<YesNoType, String> {
         @Override
-        public String convertToDatabaseColumn(YesNoType yesNoType) {
-            return yesNoType.getCode();
+        public String convertToDatabaseColumn(YesNoType attribute) {
+            return attribute.getCode();
         }
 
         @Override
