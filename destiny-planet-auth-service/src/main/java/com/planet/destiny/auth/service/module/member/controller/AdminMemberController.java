@@ -6,6 +6,7 @@ import com.planet.destiny.auth.service.module.member.service.AdminMemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ public class AdminMemberController {
     private final AdminMemberService adminMemberService;
 
     @PostMapping(value = "/login")
-    public ResponseEntity login(@RequestBody AdminMemberDto.LoginReq reqDto) {
+    public ResponseEntity login(@Validated @RequestBody AdminMemberDto.LoginReq reqDto) {
         return ResponseEntity.ok(adminMemberService.login(reqDto));
     }
 

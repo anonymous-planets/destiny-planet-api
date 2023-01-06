@@ -1,5 +1,6 @@
 package com.planet.destiny.core.api.validate.validator;
 
+import com.planet.destiny.core.api.utils.StringUtils;
 import com.planet.destiny.core.api.validate.annotation.Phone;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -20,6 +21,9 @@ public class PhoneValidator implements ConstraintValidator<Phone, String> {
     // 유효성을 검증하는 메소드
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
+        if(StringUtils.isEmpty(value)) {
+            return false;
+        }
         Pattern pattern = Pattern.compile("\\d{3}-\\d{4}-\\{4}");
         Matcher matcher = pattern.matcher(value);
         return matcher.matches();
