@@ -64,6 +64,10 @@ public class TokenDto {
             this.refreshTokenExpireTime = refreshTokenExpireTime;
         }
 
+        public void setGrantType(String grantType) {
+            this.grantType = grantType;
+        }
+
         public TokenRes setAccessTokenInfo(String accessToken, Long accessTokenExpiresIn, Long accessTokenExpireTime) {
             this.accessToken = accessToken;
             this.accessTokenExpiresIn = accessTokenExpiresIn;
@@ -74,7 +78,7 @@ public class TokenDto {
         public TokenRes setRefreshTokenInfo(String refreshToken, Long refreshTokenExpiresIn, Long refreshTokenExpireTime) {
             this.refreshToken = refreshToken;
             this.refreshTokenExpiresIn = refreshTokenExpiresIn;
-            this.refreshTokenExpireTime = refreshTokenExpireTime;
+            this.refreshTokenExpireTime = refreshTokenExpireTime; // 일
             return this;
         }
     }

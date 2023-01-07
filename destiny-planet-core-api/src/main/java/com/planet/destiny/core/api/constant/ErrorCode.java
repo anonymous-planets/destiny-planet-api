@@ -10,7 +10,7 @@ public enum ErrorCode implements ErrorCodeType {
 
     , FORBIDDEN(HttpStatus.FORBIDDEN, "C201", "권한이 없는 요청입니다.", "해당 페이지 접근 권한이 없습니다.", "해당 페이지 접근 권한이 없습니다.")
 
-    , NOT_FOUND(HttpStatus.NOT_FOUND, "C401", "정보를 찾을 수 없습니다.", "", "")
+    , NOT_FOUND(HttpStatus.NOT_FOUND, "C401", "정보를 찾을 수 없습니다.", "{0} 정보를 찾을 수 없습니다.", "")
     , NOT_FOUND_RESOURCE(HttpStatus.NOT_FOUND, "C402", "자원 정보를 찾을 수 없습니다.", "%s 정보를 찾을 수 없습니다.", "")
     , NOT_FOUND_USER(HttpStatus.NOT_FOUND, "C402", "회원 정보를 찾을 수 없습니다.", "[%s] 회원 정보를 찾을 수 없습니다.", "")
     , NOT_FOUND_ENUM_VALUE(HttpStatus.NOT_FOUND, "C403", "타입 정보를 찾을 수 없습니다.", "%{0}는 %{1} 에서 지원 하지 않는 값입니다.", "문제가 발생 했습니다. 잠시 후 다시 시도해주세요.<br/>계속 문제가 발생시 로그아웃 후 다시 로그인 해주세요.")

@@ -35,12 +35,10 @@ public class AdminMemberDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class LoginRes implements Serializable {
-        private Long memberIdx;
         private TokenDto.TokenRes token;
 
         @Builder
-        public LoginRes(Long memberIdx, TokenDto.TokenRes token) {
-            this.memberIdx = memberIdx;
+        public LoginRes(TokenDto.TokenRes token) {
             this.token = token;
         }
     }

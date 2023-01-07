@@ -1,6 +1,10 @@
 package com.planet.destiny.core.api.constant.member;
 
 import com.planet.destiny.core.api.constant.LegacyType;
+import com.planet.destiny.core.api.exception.NotFoundEnumValueException;
+import com.planet.destiny.core.api.utils.StringUtils;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 public enum AdminRoleType implements LegacyType {
 
@@ -32,5 +36,31 @@ public enum AdminRoleType implements LegacyType {
     @Override
     public String getDesc() {
         return this.desc;
+    }
+
+    public static AdminRoleType create(String value) throws NotFoundEnumValueException {
+        if(StringUtils.isEmpty(value)) {
+            throw new NotFoundEnumValueException(AdminRoleType.class.getSimpleName());
+        }
+
+        for(AdminRoleType adminRoleType : AdminRoleType.values()) {
+            if(adminRoleType.getName().equals(value) || adminRoleType.getCode().equals(value)) {
+                return adminRoleType;
+            }
+        }
+        throw new NotFoundEnumValueException(value, AdminRoleType.class.getSimpleName());
+    }
+
+    @Converter
+    public static class AdminRoleTypeAttributeConverter implements AttributeConverter<AdminRoleType, String> {
+        @Override
+        public String convertToDatabaseColumn(AdminRoleType attribute) {
+            return attribute.getCode();
+        }
+
+        @Override
+        public AdminRoleType convertToEntityAttribute(String dbData) {
+            return AdminRoleType.create(dbData);
+        }
     }
 }

@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 @Slf4j
 @Getter
@@ -65,6 +66,9 @@ public class AdminMemberEntity implements Serializable {
 
     @Column(name = "modified_date_time", columnDefinition = "VARCHAR(30) NOT NULL COMMENT '회원 이름'")
     private Date modifiedDateTime;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "admin")
+    private Set<AdminRoleEntity> roles;
 
 
     @Builder

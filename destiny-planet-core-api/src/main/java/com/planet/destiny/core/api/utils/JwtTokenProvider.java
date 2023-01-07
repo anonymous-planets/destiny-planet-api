@@ -50,17 +50,18 @@ public class JwtTokenProvider {
                 .compact()
                 ;
 
+        token.setGrantType(GRANT_TYPE);
         return token.setAccessTokenInfo(accessToken, expiration.getTime(), ACCESS_TOKEN_EXPIRE_TIME);
     }
 
-    public TokenDto.TokenRes createRefreshToken(long now, TokenDto.TokenRes token) {
+    public TokenDto.TokenRes createRefreshToken(TokenDto.TokenIssueReq reqDto, TokenDto.TokenRes token) {
         Claims claims = Jwts.claims();
 
-        Date expiration = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
+        Date expiration = new Date(reqDto.getCurrentDateTime() + REFRESH_TOKEN_EXPIRE_TIME);
 
         String refreshToken = Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(new Date(now))
+                .setIssuedAt(new Date(reqDto.getCurrentDateTime()))
                 .setExpiration(expiration)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
