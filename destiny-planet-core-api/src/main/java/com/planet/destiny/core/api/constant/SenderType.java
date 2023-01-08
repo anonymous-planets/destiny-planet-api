@@ -1,6 +1,7 @@
 package com.planet.destiny.core.api.constant;
 
 import com.planet.destiny.core.api.module.sender.item.SenderDto;
+import com.planet.destiny.core.api.module.sender.service.SenderCallback;
 
 import java.util.EnumSet;
 
@@ -41,7 +42,7 @@ public enum SenderType implements LegacyType {
      * 메세지 전송 상세 클래스가 구현할 인터페이스
      */
     public interface Sender<T extends SenderDto> {
-        void send(T senderDto);
+        void send(T senderDto, SenderCallback callback);
     }
 
     public interface SenderFactory {

@@ -10,15 +10,20 @@ import com.planet.destiny.auth.service.module.token.service.TokenService;
 import com.planet.destiny.core.api.constant.SenderType;
 import com.planet.destiny.core.api.items.wrapper.response.RestEmptyResponse;
 import com.planet.destiny.core.api.items.wrapper.response.RestSingleResponse;
+import com.planet.destiny.core.api.module.sender.item.EmailDto;
 import com.planet.destiny.core.api.module.sender.item.SenderDto;
+import com.planet.destiny.core.api.module.sender.service.SenderCallback;
 import com.planet.destiny.core.api.module.sender.service.SenderService;
 import com.planet.destiny.core.api.module.token.item.TokenDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -47,13 +52,17 @@ public class AdminMemberService {
         return RestSingleResponse.success(AdminMemberDto.LoginRes.builder().token(token).build());
     }
 
+    @Async
     @Transactional
     public RestEmptyResponse invite(AdminMemberDto.InviteReq reqDto) {
-        // 초대 메일 전송
         // DB에 내용 저장
+        // 초대 메일 전송
+        senderService.send(null, (idx, result) -> {
+            // 내용 콜백
+            System.out.println("id : " + idx);
+            System.out.println("result : " + result);
 
-
-
+        });
         return RestEmptyResponse.success("회원 초대가 정상적으로 이루어졌습니다.");
     }
 

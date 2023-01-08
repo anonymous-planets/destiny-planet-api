@@ -30,13 +30,13 @@ public class AdminMemberController {
         return ResponseEntity.ok(adminMemberService.login(reqDto));
     }
 
+    @PostMapping(value = "/invite")
+    public ResponseEntity invite(@Validated @RequestBody AdminMemberDto.InviteReq reqDto) {
+        return ResponseEntity.ok(adminMemberService.invite(reqDto));
+    }
+
     @PostMapping(value = "/sign-in")
     public ResponseEntity signIn(@Validated @RequestBody AdminMemberDto.SignInReq reqDto) {
         return ResponseEntity.ok(adminMemberService.signIn(reqDto));
-    }
-
-    @PostMapping(value = "/invite")
-    public ResponseEntity invite(@Validated @RequestBody AdminMemberDto.InviteReq reqDto) {
-        return ResponseEntity.ok(reqDto);
     }
 }

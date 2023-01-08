@@ -2,14 +2,10 @@ package com.planet.destiny.core.api.module.sender.service;
 
 
 import com.planet.destiny.core.api.constant.SenderType;
-import com.planet.destiny.core.api.exception.BusinessException;
 import com.planet.destiny.core.api.module.sender.item.EmailDto;
-import com.planet.destiny.core.api.module.sender.item.SenderDto;
-import com.sun.mail.util.logging.MailHandler;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -53,19 +49,16 @@ public class EmailSender implements SenderType.Sender<EmailDto> {
     }
 
 
-    @Override
-    public void send(EmailDto emailDto) {
-        try{
 
+    @Override
+    public void send(EmailDto emailDto, SenderCallback callback) {
+        boolean result = true;
+        try{
             // 보내는 사람 설정
-            if(emailDto.getFromInfo() == null) {
-                this.setFromInfo(fromAddress, fromName);
-            } else {
-                this.setFromInfo(emailDto.getFromInfo().getAddress(), emailDto.getFromInfo().getName());
-            }
+            this.setFromInfo(fromAddress, fromName);
 
             // 받는 사람 설정
-            setToInfo(emailDto.getToInfos());
+            this.setToInfo(emailDto.getToInfos());
 
             // 제목
             this.setSubject(emailDto.getSubject());
@@ -77,16 +70,24 @@ public class EmailSender implements SenderType.Sender<EmailDto> {
                 this.setContent(emailDto.getContent());
             }
 
+            // 첨부 파일
             if(emailDto.getAttachFiles() != null) {
                 for(EmailDto.AttachFile attachFile : emailDto.getAttachFiles()) {
                     this.setAttach(attachFile);
                 }
             }
 
+            // 메일 전송
             javaMailSender.send(message);
-        } catch(MessagingException e) {
+        } catch(MessagingException e ) {
+            result = false;
         } catch(UnsupportedEncodingException e) {
+            result = false;
         } catch(IOException e) {
+            result = false;
+        } finally {
+            // 메일 전송 성공 여부
+            callback.execute(emailDto.getIdx(), result);
         }
     }
 
@@ -96,6 +97,11 @@ public class EmailSender implements SenderType.Sender<EmailDto> {
          messageHelper.setFrom(new InternetAddress(fromAddress, fromName));
     }
 
+
+    // 받는 사람 이메일, 이름 설정
+    private void setToInfo(EmailDto.PersonInfo toInfo) throws MessagingException, UnsupportedEncodingException {
+        messageHelper.setTo(new InternetAddress(toInfo.getAddress(), toInfo.getName()));
+    }
 
     // 받는 사람 이메일, 이름 설정
     private void setToInfo(List<EmailDto.PersonInfo> toInfo) throws MessagingException, UnsupportedEncodingException {

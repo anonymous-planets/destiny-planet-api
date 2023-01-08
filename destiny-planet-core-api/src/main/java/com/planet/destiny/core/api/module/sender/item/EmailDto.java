@@ -17,6 +17,7 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EmailDto extends SenderDto implements Serializable {
 
+    private Long idx;
     private List<PersonInfo> toInfos = new ArrayList<>();
     private PersonInfo fromInfo;
     private String subject;
@@ -27,10 +28,11 @@ public class EmailDto extends SenderDto implements Serializable {
     private List<AttachFile> attachFiles = new ArrayList<>();
 
     @Builder
-    public EmailDto(SenderType senderType, List<PersonInfo> toInfos, PersonInfo fromInfo
+    public EmailDto(Long idx, SenderType senderType, List<PersonInfo> toInfos, PersonInfo fromInfo
             , String subject, String content, Boolean isUseHtml
             , String templateFileName , Map<String, Object> params, List<AttachFile> attachFiles) {
         super(senderType);
+        this.idx = idx;
         this.toInfos = toInfos;
         this.fromInfo = fromInfo;
         this.subject = subject;

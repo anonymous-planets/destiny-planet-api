@@ -16,7 +16,7 @@ public class SenderService <T extends SenderDto> {
 
     private final SenderType.SenderFactory senderFactory;
 
-    public void send(T sender) {
-        senderFactory.getSender(sender.getSenderType()).send(sender);
+    public void send(T sender, SenderCallback callback) {
+        senderFactory.getSender(sender.getSenderType()).send(sender, callback);
     }
 }
