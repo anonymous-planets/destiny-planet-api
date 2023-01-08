@@ -2,6 +2,7 @@ package com.planet.destiny.core.api.module.sender.service;
 
 
 import com.planet.destiny.core.api.constant.SenderType;
+import com.planet.destiny.core.api.constant.YesNoType;
 import com.planet.destiny.core.api.module.sender.item.EmailDto;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
@@ -12,6 +13,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -48,11 +50,10 @@ public class EmailSender implements SenderType.Sender<EmailDto> {
         this.templateEngine = templateEngine;
     }
 
-
-
+    @Async
     @Override
     public void send(EmailDto emailDto, SenderCallback callback) {
-        boolean result = true;
+        YesNoType sendYn = YesNoType.YES;
         try{
             // 보내는 사람 설정
             this.setFromInfo(fromAddress, fromName);
@@ -80,14 +81,14 @@ public class EmailSender implements SenderType.Sender<EmailDto> {
             // 메일 전송
             javaMailSender.send(message);
         } catch(MessagingException e ) {
-            result = false;
+            sendYn = YesNoType.NO;
         } catch(UnsupportedEncodingException e) {
-            result = false;
+            sendYn = YesNoType.NO;
         } catch(IOException e) {
-            result = false;
+            sendYn = YesNoType.NO;
         } finally {
             // 메일 전송 성공 여부
-            callback.execute(emailDto.getIdx(), result);
+            callback.execute(sendYn);
         }
     }
 

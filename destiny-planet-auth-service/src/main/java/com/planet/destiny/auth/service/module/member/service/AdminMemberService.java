@@ -4,7 +4,9 @@ package com.planet.destiny.auth.service.module.member.service;
 import com.planet.destiny.auth.service.constant.ErrorCodeAuth;
 import com.planet.destiny.auth.service.exception.member.MemberNotFoundException;
 import com.planet.destiny.auth.service.module.member.item.AdminMemberDto;
+import com.planet.destiny.auth.service.module.member.model.AdminInviteEntity;
 import com.planet.destiny.auth.service.module.member.model.AdminMemberEntity;
+import com.planet.destiny.auth.service.module.member.repository.AdminInviteRepository;
 import com.planet.destiny.auth.service.module.member.repository.AdminMemberRepository;
 import com.planet.destiny.auth.service.module.token.service.TokenService;
 import com.planet.destiny.core.api.constant.SenderType;
@@ -23,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +35,8 @@ import java.util.stream.Collectors;
 public class AdminMemberService {
 
     private final AdminMemberRepository adminMemberRepository;
+
+    private final AdminInviteRepository adminInviteRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -52,17 +57,19 @@ public class AdminMemberService {
         return RestSingleResponse.success(AdminMemberDto.LoginRes.builder().token(token).build());
     }
 
-    @Async
     @Transactional
     public RestEmptyResponse invite(AdminMemberDto.InviteReq reqDto) {
         // DB에 내용 저장
-        // 초대 메일 전송
-        senderService.send(null, (idx, result) -> {
-            // 내용 콜백
-            System.out.println("id : " + idx);
-            System.out.println("result : " + result);
+        Date now = new Date();
+        AdminMemberEntity admin = adminMemberRepository.findByIdx(1L).orElseGet(null);
+        AdminInviteEntity invite = adminInviteRepository.save(AdminInviteEntity.builder().senderType(reqDto.getSender()).creator(admin).modifier(admin).build());
 
+        // 초대 메일 전송
+        senderService.send(null, sendYn -> {
+            // 내용 콜백
+            adminInviteRepository.save(invite.updateSendYn(sendYn));
         });
+
         return RestEmptyResponse.success("회원 초대가 정상적으로 이루어졌습니다.");
     }
 
@@ -70,6 +77,4 @@ public class AdminMemberService {
     public RestEmptyResponse signIn(AdminMemberDto.SignInReq reqDto) {
         return RestEmptyResponse.success();
     }
-
-
 }

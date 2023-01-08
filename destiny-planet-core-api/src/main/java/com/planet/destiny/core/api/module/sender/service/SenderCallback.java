@@ -1,5 +1,7 @@
 package com.planet.destiny.core.api.module.sender.service;
 
+import com.planet.destiny.core.api.constant.YesNoType;
+
 public interface SenderCallback {
-    void execute(Long idx, boolean result);
+    void execute(YesNoType sendYn);
 }
