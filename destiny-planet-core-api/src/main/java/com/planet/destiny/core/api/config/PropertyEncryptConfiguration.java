@@ -3,6 +3,7 @@ package com.planet.destiny.core.api.config;
 
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +13,17 @@ import org.springframework.context.annotation.Configuration;
 public class PropertyEncryptConfiguration {
 
     public static void main(String args[]) {
+        String password = "destiny_planet";
 
+        StandardPBEStringEncryptor jasypt = new StandardPBEStringEncryptor();
+        jasypt.setPassword(password);
+        jasypt.setAlgorithm("PBEWithMD5AndDES");
+
+        String encryptedText = jasypt.encrypt("anonymous");
+        String decryptedText = jasypt.decrypt(encryptedText);
+
+        System.out.println(encryptedText);
+        System.out.println(decryptedText);
     }
 
     @Bean("jasyptStringEncryptor")
