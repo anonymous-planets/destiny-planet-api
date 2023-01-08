@@ -1,6 +1,11 @@
 package com.planet.destiny.core.api.constant.member;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.planet.destiny.core.api.constant.LegacyType;
+import com.planet.destiny.core.api.exception.NotFoundEnumValueException;
+import com.planet.destiny.core.api.utils.StringUtils;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 public enum RoleType implements LegacyType {
 
@@ -38,5 +43,31 @@ public enum RoleType implements LegacyType {
     @Override
     public String getDesc() {
         return this.desc;
+    }
+
+    @JsonCreator
+    public static RoleType create(String value) throws NotFoundEnumValueException {
+        if(StringUtils.isEmpty(value)) {
+            throw new NotFoundEnumValueException(RoleType.class.getSimpleName());
+        }
+
+        for(RoleType roleType : RoleType.values()) {
+            if(roleType.getCode().equals(value) || roleType.getName().equals(value)) {
+                return roleType;
+            }
+        }
+        throw new NotFoundEnumValueException(value, RoleType.class.getSimpleName());
+    }
+
+    @Converter
+    public static class RoleTypeAttributeConverter implements AttributeConverter<RoleType, String> {
+        @Override
+        public String convertToDatabaseColumn(RoleType attribute) {
+            return attribute.getCode();
+        }
+        @Override
+        public RoleType convertToEntityAttribute(String dbData) {
+            return RoleType.create(dbData);
+        }
     }
 }

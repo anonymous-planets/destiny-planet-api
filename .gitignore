@@ -33,7 +33,8 @@ test/
 *.log
 
 ### 특정 파일 ignore
-planet-common-api/src/main/java/com/planet/anonymous/common/config/PropertyEncryptConfig.java
+destiny-planet-core-api/src/main/java/com/planet/destiny/core/api/config/PropertyEncryptConfiguration.java
+
 
 ### Node
 /node/

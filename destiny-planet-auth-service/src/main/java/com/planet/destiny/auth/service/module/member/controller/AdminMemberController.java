@@ -3,6 +3,7 @@ package com.planet.destiny.auth.service.module.member.controller;
 
 import com.planet.destiny.auth.service.module.member.item.AdminMemberDto;
 import com.planet.destiny.auth.service.module.member.service.AdminMemberService;
+import com.planet.destiny.core.api.module.sender.service.SenderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -32,5 +33,10 @@ public class AdminMemberController {
     @PostMapping(value = "/sign-in")
     public ResponseEntity signIn(@Validated @RequestBody AdminMemberDto.SignInReq reqDto) {
         return ResponseEntity.ok(adminMemberService.signIn(reqDto));
+    }
+
+    @PostMapping(value = "/invite")
+    public ResponseEntity invite(@Validated @RequestBody AdminMemberDto.InviteReq reqDto) {
+        return ResponseEntity.ok(reqDto);
     }
 }
