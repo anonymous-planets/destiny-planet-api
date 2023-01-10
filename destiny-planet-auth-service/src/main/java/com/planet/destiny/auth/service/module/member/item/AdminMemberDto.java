@@ -50,29 +50,7 @@ public class AdminMemberDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class InviteReq implements Serializable {
-        @NotBlank(message = "회원 이름 값이 없습니다.")
-        private String name;
-
-        private String email;
-
-        private String phone;
-
-//        @NotBlank(message = "설정 권한 값이 없습니다.")
-        private RoleType role;
-
-//        @NotBlank(message = "메세지 전송 방법값이 없습니다")
-        private SenderType sender;
-
-
-        @Builder
-        public InviteReq(String name, String email, String phone, RoleType role, SenderType sender) {
-            this.name = name;
-            this.email = email;
-            this.phone = phone;
-            this.role = role;
-            this.sender = sender;
-        }
+    public static class InviteReq extends EmailDto implements Serializable {
     }
 
     @Getter

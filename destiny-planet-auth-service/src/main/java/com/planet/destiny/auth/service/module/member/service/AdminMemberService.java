@@ -20,6 +20,7 @@ import com.planet.destiny.core.api.module.token.item.TokenDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,9 @@ public class AdminMemberService {
 
     private final SenderService senderService;
 
+    @Value("${invite.admin.email.expire-time}")
+    private String inviteExpireTime;
+
     @Transactional
     public RestSingleResponse<AdminMemberDto.LoginRes> login(AdminMemberDto.LoginReq reqDto) {
         AdminMemberEntity admin = adminMemberRepository.findByMemberId(reqDto.getMemberId()).orElseThrow(() -> new MemberNotFoundException(ErrorCodeAuth.LOGIN_ERROR, "로그인 실패", "아이디가 올바르지 않습니다."));
@@ -60,12 +64,23 @@ public class AdminMemberService {
     @Transactional
     public RestEmptyResponse invite(AdminMemberDto.InviteReq reqDto) {
         // DB에 내용 저장
-        Date now = new Date();
-        AdminMemberEntity admin = adminMemberRepository.findByIdx(1L).orElseGet(null);
-        AdminInviteEntity invite = adminInviteRepository.save(AdminInviteEntity.builder().senderType(reqDto.getSender()).creator(admin).modifier(admin).build());
+        AdminMemberEntity admin = adminMemberRepository.findByIdx(reqDto.getCreatorIdx()).orElseThrow(() -> new MemberNotFoundException(ErrorCodeAuth.MEMBER_NOT_FOUND, "NOT FOUND ADMIN INFO", "보내는 관리자 정보를 찾을 수 없습니다."));
+
+        AdminInviteEntity invite = adminInviteRepository.save(
+                AdminInviteEntity.builder()
+                        .senderType(SenderType.EMAIL)
+                        .sender(reqDto.getFromInfo().getName())
+                        .receiverName(reqDto.getToInfo().getName())
+                        .receiver(reqDto.getToInfo().getAddress())
+                        .expireTime(Integer.parseInt(inviteExpireTime))
+                        .expireDateTime(new Date(new Date().getTime() + Long.parseLong(inviteExpireTime)))
+                        .creator(admin)
+                        .modifier(admin)
+                        .build()
+        );
 
         // 초대 메일 전송
-        senderService.send(null, sendYn -> {
+        senderService.send(reqDto, sendYn -> {
             // 내용 콜백
             adminInviteRepository.save(invite.updateSendYn(sendYn));
         });

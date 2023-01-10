@@ -14,26 +14,27 @@ import java.util.Map;
 
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EmailDto extends SenderDto implements Serializable {
-
     private Long idx;
-    private List<PersonInfo> toInfos = new ArrayList<>();
+    private PersonInfo toInfo;
     private PersonInfo fromInfo;
     private String subject;
     private String content;
     private Boolean isUseHtml = true;
-    private String templateFileName;
-    private Map<String, Object> params = new HashMap<>();
-    private List<AttachFile> attachFiles = new ArrayList<>();
+    private String templateFileName;        // 파일명(확장파 포함)
+    private Map<String, Object> params;     // 템플릿 파일 파라미터
+    private List<AttachFile> attachFiles;   // 첨부 파일
+    private Long creatorIdx;
+
 
     @Builder
-    public EmailDto(Long idx, SenderType senderType, List<PersonInfo> toInfos, PersonInfo fromInfo
+    public EmailDto(Long idx, SenderType senderType, PersonInfo toInfo, PersonInfo fromInfo
             , String subject, String content, Boolean isUseHtml
-            , String templateFileName , Map<String, Object> params, List<AttachFile> attachFiles) {
+            , String templateFileName , Map<String, Object> params, List<AttachFile> attachFiles, Long creatorIdx) {
         super(senderType);
         this.idx = idx;
-        this.toInfos = toInfos;
+        this.toInfo = toInfo;
         this.fromInfo = fromInfo;
         this.subject = subject;
         this.content = content;
@@ -41,6 +42,7 @@ public class EmailDto extends SenderDto implements Serializable {
         this.templateFileName = templateFileName;
         this.params = params;
         this.attachFiles = attachFiles;
+        this.creatorIdx = creatorIdx;
     }
 
     @Getter

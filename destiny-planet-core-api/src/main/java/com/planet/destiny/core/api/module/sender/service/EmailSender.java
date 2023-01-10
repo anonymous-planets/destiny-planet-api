@@ -59,7 +59,7 @@ public class EmailSender implements SenderType.Sender<EmailDto> {
             this.setFromInfo(fromAddress, fromName);
 
             // 받는 사람 설정
-            this.setToInfo(emailDto.getToInfos());
+            this.setToInfo(emailDto.getToInfo());
 
             // 제목
             this.setSubject(emailDto.getSubject());

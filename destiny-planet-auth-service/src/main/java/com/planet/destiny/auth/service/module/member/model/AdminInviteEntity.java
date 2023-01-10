@@ -22,7 +22,6 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AdminInviteEntity implements Serializable {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
@@ -50,10 +49,12 @@ public class AdminInviteEntity implements Serializable {
     @Convert(converter = YesNoType.YesNoTypeAttributeConverter.class)
     private YesNoType authYn;
 
-
     @Column(name = "send_yn")
     @Convert(converter = YesNoType.YesNoTypeAttributeConverter.class)
     private YesNoType sendYn;
+
+    @Column(name = "template_file_name", columnDefinition = "VARCHAR(100) COMMENT '템플릿 파일 명'")
+    private String templateFileName;
 
     @Column(name = "send_date")
     private Date sendDate;
