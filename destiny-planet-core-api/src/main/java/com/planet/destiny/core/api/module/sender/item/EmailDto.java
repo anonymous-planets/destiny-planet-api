@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,32 +15,29 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EmailDto extends SenderDto implements Serializable {
     private Long idx;
-    private PersonInfo toInfo;
-    private PersonInfo fromInfo;
-    private String subject;
-    private String content;
-    private Boolean isUseHtml = true;
+    private PersonInfo toInfo;              // 보내는 사람 정보
+    private PersonInfo fromInfo;            // 받는 사람 정보
+    private String subject;                 // 제목
+    private String content;                 // 내용
+    private Boolean isUseTemplate = true;   // template파일 사용 여부
     private String templateFileName;        // 파일명(확장파 포함)
     private Map<String, Object> params;     // 템플릿 파일 파라미터
     private List<AttachFile> attachFiles;   // 첨부 파일
-    private Long creatorIdx;
 
 
     @Builder
-    public EmailDto(Long idx, SenderType senderType, PersonInfo toInfo, PersonInfo fromInfo
-            , String subject, String content, Boolean isUseHtml
+    public EmailDto(SenderType senderType, PersonInfo toInfo, PersonInfo fromInfo
+            , String subject, String content, Boolean isUseTemplate
             , String templateFileName , Map<String, Object> params, List<AttachFile> attachFiles, Long creatorIdx) {
         super(senderType);
-        this.idx = idx;
         this.toInfo = toInfo;
         this.fromInfo = fromInfo;
         this.subject = subject;
         this.content = content;
-        this.isUseHtml = isUseHtml;
+        this.isUseTemplate = isUseTemplate;
         this.templateFileName = templateFileName;
         this.params = params;
         this.attachFiles = attachFiles;
-        this.creatorIdx = creatorIdx;
     }
 
     @Getter

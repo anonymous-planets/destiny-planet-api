@@ -1,7 +1,7 @@
 package com.planet.destiny.auth.service.module.token.model;
 
 
-import com.planet.destiny.auth.service.module.member.model.AdminMemberEntity;
+import com.planet.destiny.core.api.module.member.model.AdminMemberEntity;
 import com.planet.destiny.core.api.module.token.item.TokenDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -9,10 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.util.Date;

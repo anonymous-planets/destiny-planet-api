@@ -1,9 +1,8 @@
 package com.planet.destiny.auth.service.module.token.service;
 
 
-import com.planet.destiny.auth.service.constant.ErrorCodeAuth;
 import com.planet.destiny.auth.service.exception.member.MemberNotFoundException;
-import com.planet.destiny.auth.service.module.member.model.AdminMemberEntity;
+import com.planet.destiny.core.api.module.member.model.AdminMemberEntity;
 import com.planet.destiny.auth.service.module.member.repository.AdminMemberRepository;
 import com.planet.destiny.auth.service.module.token.model.AdminTokenEntity;
 import com.planet.destiny.auth.service.module.token.repository.AdminTokenRepository;
@@ -12,8 +11,6 @@ import com.planet.destiny.core.api.utils.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 @Slf4j
 @Service(value = "tokenService")

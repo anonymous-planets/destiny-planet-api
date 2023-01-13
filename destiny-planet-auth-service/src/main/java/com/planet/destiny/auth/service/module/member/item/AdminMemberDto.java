@@ -1,19 +1,19 @@
 package com.planet.destiny.auth.service.module.member.item;
 
+import com.google.gson.Gson;
 import com.planet.destiny.core.api.constant.SenderType;
-import com.planet.destiny.core.api.constant.member.RoleType;
+import com.planet.destiny.core.api.constant.member.AdminRoleType;
 import com.planet.destiny.core.api.module.sender.item.EmailDto;
 import com.planet.destiny.core.api.module.token.item.TokenDto;
-import com.planet.destiny.core.api.validate.annotation.Phone;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.annotation.Nullable;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AdminMemberDto {
 
@@ -50,7 +50,43 @@ public class AdminMemberDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class InviteReq extends EmailDto implements Serializable {
+    public static class InviteReq implements Serializable {
+
+        private Long senderIdx;
+
+        private AdminRoleType role;
+
+        @NotBlank(message = "수신자 이름은 필수 값입니다.")
+        private String receiverName;
+
+        @NotBlank(message = "수신자 이메일은 필수 값입니다.")
+        private String receiverAddress;
+
+        @Builder
+        public InviteReq(Long senderIdx, AdminRoleType role, String receiverName, String receiverAddress) {
+            this.senderIdx = senderIdx;
+            this.role = role;
+            this.receiverName = receiverName;
+            this.receiverAddress = receiverAddress;
+        }
+
+        public EmailDto toEmailDto(String senderName, String senderAddress, String templateFileName, String param) {
+            Gson gson = new Gson();
+            Map<String, Object> paramMap = gson.fromJson(param, Map.class);
+            paramMap.put("receiverName", this.receiverName);
+            paramMap.put("role", this.role.getDesc());
+
+            return EmailDto
+                    .builder()
+                    .senderType(SenderType.EMAIL)
+                    .fromInfo(EmailDto.PersonInfo.builder().name(senderName).address(senderAddress).build())
+                    .toInfo(EmailDto.PersonInfo.builder().name(this.receiverName).address(this.receiverAddress).build())
+                    .subject("[DestinyPlanet] 관리자 회원 가입 요청")
+                    .isUseTemplate(true)
+                    .templateFileName(templateFileName)
+                    .params(paramMap)
+                    .build();
+        }
     }
 
     @Getter

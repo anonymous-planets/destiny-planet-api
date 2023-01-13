@@ -22,7 +22,12 @@ import javax.sql.DataSource;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "planetEntityManager",
         transactionManagerRef = "planetTransactionManager",
-        basePackages = {"com.planet.destiny.*.service.module.*.repository", "com.planet.destiny.*.service.module.*.*.repository"}
+        basePackages = {
+                "com.planet.destiny.*.service.module.*.repository"
+                , "com.planet.destiny.*.service.module.*.*.repository"
+                , "com.planet.destiny.core.api.module.*.repository"
+                , "com.planet.destiny.core.api.module.*.*.repository"
+        }
 )
 public class DataSourceConfiguration {
 
@@ -68,7 +73,13 @@ public class DataSourceConfiguration {
     public LocalContainerEntityManagerFactoryBean planetEntityManager(EntityManagerFactoryBuilder builder, @Qualifier("planetDataSource") DataSource planetDataSource) {
         return builder
                 .dataSource(planetDataSource)
-                .packages("com.planet.destiny.*.service.module.*.model", "com.planet.destiny.*.service.module.*.*.model")
+                .packages(
+                        "com.planet.destiny.*.service.module.*.model"
+                        , "com.planet.destiny.*.service.module.*.*.model"
+                        , "com.planet.destiny.core.api.module.*.model"
+                        , "com.planet.destiny.core.api.module.*.*.model"
+
+                )
                 .persistenceUnit("destiny-planet")
                 .build();
     }

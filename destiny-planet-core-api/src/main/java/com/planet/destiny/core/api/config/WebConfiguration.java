@@ -26,7 +26,7 @@ public class WebConfiguration {
      * @return
      */
     @Bean
-    public CorsConfiguration corsConfigurationSource() {
+    public CorsConfiguration corsConfiguration() {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // 허용 Origin(Origin = URI Schema + hostname + port)

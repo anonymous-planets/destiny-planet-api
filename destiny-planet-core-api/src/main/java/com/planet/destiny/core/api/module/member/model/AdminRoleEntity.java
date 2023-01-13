@@ -1,4 +1,4 @@
-package com.planet.destiny.auth.service.module.member.model;
+package com.planet.destiny.core.api.module.member.model;
 
 
 import jakarta.persistence.*;

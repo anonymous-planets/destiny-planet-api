@@ -1,9 +1,8 @@
-package com.planet.destiny.auth.service.module.member.model;
+package com.planet.destiny.core.api.module.member.model;
 
 
 import com.planet.destiny.core.api.constant.YesNoType;
 import com.planet.destiny.core.api.constant.member.AdminRoleType;
-import com.planet.destiny.core.api.constant.member.RoleType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

@@ -1,5 +1,6 @@
 package com.planet.destiny.core.api.constant.member;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.planet.destiny.core.api.constant.LegacyType;
 import com.planet.destiny.core.api.exception.NotFoundEnumValueException;
 import com.planet.destiny.core.api.utils.StringUtils;
@@ -9,8 +10,8 @@ import jakarta.persistence.Converter;
 public enum AdminRoleType implements LegacyType {
 
     GUEST("G", "비인증 회원")
-    , ADMIN("A", "관리자")
     , MANAGER("M", "매니저")
+    , ADMIN("A", "관리자")
     , SUPER_ADMIN("S", "슈퍼 관리자")
     ;
 
@@ -38,6 +39,7 @@ public enum AdminRoleType implements LegacyType {
         return this.desc;
     }
 
+    @JsonCreator
     public static AdminRoleType create(String value) throws NotFoundEnumValueException {
         if(StringUtils.isEmpty(value)) {
             throw new NotFoundEnumValueException(AdminRoleType.class.getSimpleName());

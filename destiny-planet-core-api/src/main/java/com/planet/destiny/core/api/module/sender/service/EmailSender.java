@@ -65,7 +65,7 @@ public class EmailSender implements SenderType.Sender<EmailDto> {
             this.setSubject(emailDto.getSubject());
 
             // 내용
-            if(emailDto.getIsUseHtml()) {
+            if(emailDto.getIsUseTemplate()) {
                 this.setTemplateContent(emailDto.getTemplateFileName(), emailDto.getParams());
             } else {
                 this.setContent(emailDto.getContent());
@@ -76,7 +76,10 @@ public class EmailSender implements SenderType.Sender<EmailDto> {
                 for(EmailDto.AttachFile attachFile : emailDto.getAttachFiles()) {
                     this.setAttach(attachFile);
                 }
+            } else {
+                throw new MessagingException();
             }
+
 
             // 메일 전송
             javaMailSender.send(message);
