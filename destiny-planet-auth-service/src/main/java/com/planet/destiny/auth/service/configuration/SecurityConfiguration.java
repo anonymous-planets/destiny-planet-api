@@ -26,6 +26,9 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
+                // by default uses a Bean by the name of corsConfigurationSource
+                .cors()
+                .and()
                 .httpBasic().disable()
                 .formLogin().disable()
                 // X-Frame-Options이 Http hedaer 추가되어 iframe 외부 프레임 접근이 가능하도록 외부프레임 거부를 해제

@@ -12,6 +12,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,12 +26,17 @@ public class WebConfiguration {
      * @return
      */
     @Bean
-    public CorsConfiguration corsConfiguration() {
+    public CorsConfiguration corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOrigin("*");
+        // 허용 Origin(Origin = URI Schema + hostname + port)
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://localhost:80"));
+
+        // 허용 Method
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "PATCH", "DELETE"));
-        configuration.addAllowedHeader("*");
+
+        // 허용 Header
+        configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
