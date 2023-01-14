@@ -1,11 +1,17 @@
 package com.planet.destiny.core.api.utils;
 
+import com.google.gson.Gson;
 import com.planet.destiny.core.api.constant.LegacyType;
+import com.planet.destiny.core.api.module.member.item.MemberBasDto;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class StringUtils {
+
+    public static void main(String args[]) throws Exception {
+        System.out.println(templateParams("{\"param1\" : \"name\",\"param2\" : \"memberId\"} ", MemberBasDto.builder().memberId("test").name("이름").build()));
+    }
 
     /**
      * Enum타입 찾는중 에러 발생시 해당 Enum값 목록 추출
@@ -31,5 +37,30 @@ public class StringUtils {
 
     public static boolean isEmpty(String str) {
         return (str == null || "".equals(str) || str.length() == 0);
+    }
+
+    public static String generateUUID() {
+        return String.valueOf(UUID.randomUUID()).replaceAll("-", "");
+    }
+
+    public static Map<String, Object> templateParams(String templateParamStr, Object dto) {
+        Map<String, Object> templateParams = new HashMap<>();
+
+        try{
+            Map<String, String> params = new Gson().fromJson(templateParamStr, Map.class);
+            Object obj = dto;
+            for(String key : params.keySet()) {
+                String value = params.get(key);
+                for(Field field : dto.getClass().getDeclaredFields()) {
+                    if(value.equals(field.getName())) {
+                        field.setAccessible(true);
+                        templateParams.put(value, field.get(dto));
+                    }
+                }
+            }
+            return templateParams;
+        }catch(Exception e) {
+            return null;
+        }
     }
 }

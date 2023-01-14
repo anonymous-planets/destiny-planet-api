@@ -19,7 +19,6 @@ public class BusinessException extends RuntimeException {
         this.alertMessage = alertMessage;
     }
 
-
     public BusinessException(ErrorCodeType errorCode, String title, String message) {
         this(errorCode, title, message, errorCode.getAlertMessage());
     }
@@ -32,14 +31,17 @@ public class BusinessException extends RuntimeException {
         this(errorCode, errorCode.getTitle(), errorCode.getMessage());
     }
 
+    public BusinessException(String title, String message) {
+        this(ErrorCode.INTERNAL_SERVER_ERROR, title, message, ErrorCode.INTERNAL_SERVER_ERROR.getAlertMessage());
+    }
+
+    public BusinessException(String message) {
+        this(ErrorCode.INTERNAL_SERVER_ERROR, ErrorCode.INTERNAL_SERVER_ERROR.getTitle(), message, ErrorCode.INTERNAL_SERVER_ERROR.getAlertMessage());
+    }
+
     public BusinessException() {
         this(ErrorCode.INTERNAL_SERVER_ERROR);
     }
-
-    public BusinessException(String alertMessage) {
-        this(ErrorCode.INTERNAL_SERVER_ERROR, ErrorCode.INTERNAL_SERVER_ERROR.getTitle(), ErrorCode.INTERNAL_SERVER_ERROR.getMessage(), alertMessage);
-    }
-
 
     public ErrorCodeType getErrorCode() {
         return this.errorCode;

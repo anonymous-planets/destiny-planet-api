@@ -2,14 +2,17 @@ package com.planet.destiny.core.api.config;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.planet.destiny.core.api.config.factory.EnumConverterFactory;
 import com.planet.destiny.core.api.utils.HTMLCharacterEscapes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,9 +20,14 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
-public class WebConfiguration {
+public class WebConfiguration implements WebMvcConfigurer {
 
     private final ObjectMapper objectMapper;
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverterFactory(new EnumConverterFactory());
+    }
 
     /**
      * 전역 공통 Cors 설정

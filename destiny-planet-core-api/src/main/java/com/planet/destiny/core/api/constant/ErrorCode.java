@@ -18,7 +18,7 @@ public enum ErrorCode implements ErrorCodeType {
     , METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C501", "허용 하지 않는 요청입니다.", "허용하지 않은 Method입니다. API정보를 다시 확인해주세요.", "문제가 발생 했습니다. 잠시 후 다시 시도해주세요.")
 
     // Server Error
-    , INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S001", "서버 에러가 발생했습니다.", "알수 없는 에러가 발생 했습니다.", "문제가 발생 했습니다. 잠시 후 다시 시도해주세요.<br/>계속 문제가 발생시 고객 센터로 문의 해주세요.")
+    , INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S001", "서버 에러가 발생했습니다.", "서버에 에러가 발생 했습니다.", "문제가 발생 했습니다. 잠시 후 다시 시도해주세요.<br/>계속 문제가 발생시 고객 센터로 문의 해주세요.")
 
     , BAD_GATEWAY(HttpStatus.BAD_GATEWAY, "S201", "잘못된 응답을 수신했습니다.", "", "")
 

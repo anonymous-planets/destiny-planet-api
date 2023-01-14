@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ResultCode {
 
-    SUCCESS(0, "성공")
-    , FAIL(-1, "실패")
-    , ERROR(-2, "에러")
+    SUCCESS(0, "SUCCESS")
+    , FAIL(-1, "FAIL")
+    , ERROR(-2, "ERROR")
     ;
 
     private final Integer code;

@@ -76,10 +76,7 @@ public class EmailSender implements SenderType.Sender<EmailDto> {
                 for(EmailDto.AttachFile attachFile : emailDto.getAttachFiles()) {
                     this.setAttach(attachFile);
                 }
-            } else {
-                throw new MessagingException();
             }
-
 
             // 메일 전송
             javaMailSender.send(message);

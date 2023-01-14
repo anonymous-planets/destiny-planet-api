@@ -1,10 +1,10 @@
 package com.planet.destiny.auth.service.module.member.item;
 
-import com.google.gson.Gson;
-import com.planet.destiny.core.api.constant.SenderType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.planet.destiny.core.api.constant.member.AdminRoleType;
-import com.planet.destiny.core.api.module.sender.item.EmailDto;
+import com.planet.destiny.core.api.module.member.item.AdminMemberBasDto;
 import com.planet.destiny.core.api.module.token.item.TokenDto;
+import com.planet.destiny.core.api.utils.PropertyUtils;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,8 +12,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 public class AdminMemberDto {
 
@@ -62,6 +60,9 @@ public class AdminMemberDto {
         @NotBlank(message = "수신자 이메일은 필수 값입니다.")
         private String receiverAddress;
 
+        @JsonIgnore
+        private String siteUrl = PropertyUtils.getProperty("site-url.admin");
+
         @Builder
         public InviteReq(Long senderIdx, AdminRoleType role, String receiverName, String receiverAddress) {
             this.senderIdx = senderIdx;
@@ -69,34 +70,34 @@ public class AdminMemberDto {
             this.receiverName = receiverName;
             this.receiverAddress = receiverAddress;
         }
+    }
 
-        public EmailDto toEmailDto(String senderName, String senderAddress, String templateFileName, String param) {
-            Gson gson = new Gson();
-            Map<String, Object> paramMap = gson.fromJson(param, Map.class);
-            paramMap.put("receiverName", this.receiverName);
-            paramMap.put("role", this.role.getDesc());
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class SignUpCheckReq implements Serializable {
+        private Long inviteIdx;
+        private String identityCode;
 
-            return EmailDto
-                    .builder()
-                    .senderType(SenderType.EMAIL)
-                    .fromInfo(EmailDto.PersonInfo.builder().name(senderName).address(senderAddress).build())
-                    .toInfo(EmailDto.PersonInfo.builder().name(this.receiverName).address(this.receiverAddress).build())
-                    .subject("[DestinyPlanet] 관리자 회원 가입 요청")
-                    .isUseTemplate(true)
-                    .templateFileName(templateFileName)
-                    .params(paramMap)
-                    .build();
+        @Builder
+        public SignUpCheckReq(Long inviteIdx, String identityCode) {
+            this.inviteIdx = inviteIdx;
+            this.identityCode = identityCode;
         }
     }
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class SignInReq extends com.planet.destiny.core.api.module.member.item.AdminMemberDto implements Serializable {
-        public SignInReq(String memberId, String name, String password, String passwordConfirm, String phone) {
-            super.memberId = memberId;
-            super.name = name;
-            super.password = password;
-            super.phone = phone;
+    public static class SignUpCheckRes implements Serializable {
+        private String email;
+
+        @Builder
+        public SignUpCheckRes(String email) {
+            this.email = email;
         }
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class SignUpReq extends AdminMemberBasDto implements Serializable {
     }
 }

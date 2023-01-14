@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.planet.destiny.core.api.constant.ErrorCode;
+import com.planet.destiny.core.api.exception.BadRequestException;
 import com.planet.destiny.core.api.exception.BusinessException;
 import com.planet.destiny.core.api.items.wrapper.response.ErrorSet;
 import com.planet.destiny.core.api.items.wrapper.response.RestEmptyResponse;
@@ -102,5 +103,23 @@ public class CommonGlobalExceptionHandler {
                                 .build()
                 )
             );
+    }
+
+    @ExceptionHandler(value = BadRequestException.class)
+    protected ResponseEntity<RestEmptyResponse> handleBadRequestException(BadRequestException e, HttpServletRequest request) {
+        log.error("[ handleBadRequestException ] BadRequestException : {}", e);
+        return ResponseEntity.status(e.getErrorCode().getStatus()).body(
+                RestEmptyResponse.error(
+                        ErrorSet.builder()
+                                .errorCode(e.getErrorCode())
+                                .name(e.getClass().getSimpleName())
+                                .title(e.getTitle())
+                                .message(e.getMessage())
+                                .alertMessage(e.getAlertMessage())
+                                .serviceName(serviceName)
+                                .path(request.getRequestURI())
+                                .build()
+                )
+        );
     }
 }

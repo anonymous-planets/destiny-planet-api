@@ -26,7 +26,7 @@ public class RestEmptyResponse<T> extends RestResponseBase<RestEmptyResponse<T>>
     }
 
     public static RestEmptyResponse success() {
-        return new RestEmptyResponse(ResultCode.SUCCESS, "", null);
+        return new RestEmptyResponse(ResultCode.SUCCESS, "정상적으로 처리 되었습니다.", null);
     }
 
     /**

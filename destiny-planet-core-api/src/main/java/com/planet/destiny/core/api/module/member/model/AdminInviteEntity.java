@@ -27,6 +27,10 @@ public class AdminInviteEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
+
+    @Column(name = "identity_code", columnDefinition = "VARCHAR(35) NOT NULL COMMENT '식별 CODE'")
+    private String identityCode;
+
     @ManyToOne
     @JoinColumn(name = "template_idx", columnDefinition = "INT COMMENT '템플릿 파일 IDX'")
     private EmailTemplateEntity template;
@@ -78,7 +82,7 @@ public class AdminInviteEntity implements Serializable {
 
 
     @Builder
-    public AdminInviteEntity(Long idx, EmailTemplateEntity template
+    public AdminInviteEntity(Long idx, String identityCode, EmailTemplateEntity template
             , String senderAddress, String senderName
             , String receiverAddress, String receiverName
             , Integer expireTime, Date expireDateTime
@@ -87,6 +91,7 @@ public class AdminInviteEntity implements Serializable {
     ) {
 
         this.idx = idx;
+        this.identityCode = identityCode;
         this.template = template;
         this.senderAddress = senderAddress;
         this.senderName = senderName;
@@ -104,6 +109,11 @@ public class AdminInviteEntity implements Serializable {
     public AdminInviteEntity updateSendYn(YesNoType sendYn) {
         this.sendYn = sendYn;
         this.sendDate = new Date();
+        return this;
+    }
+
+    public AdminInviteEntity updateAuthYn() {
+        this.authYn = YesNoType.YES;
         return this;
     }
 }
