@@ -150,7 +150,6 @@ public class AdminMemberService {
         // validation
 
         // tb_admin_invite테이블에 auth_yn값 Y로 Update
-        AdminInviteEntity invite = adminInviteRepository.f
         //        adminInviteRepository.save(invite.updateAuthYn());
 
 
