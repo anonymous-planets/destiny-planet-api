@@ -23,13 +23,13 @@ import java.util.stream.Collectors;
  */
 public class SecurityContextFilter extends OncePerRequestFilter {
 
-    private final String AUTHORIZATION_ID__HEADER = "X-Authorization-Id";
+    private final String AUTHORIZATION_ID_HEADER = "X-Authorization-Id";
     private final String AUTHORIZATION_ROLE_HEADER = "X-Authorization-Role";
 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String memberIdx = resolveHeader(AUTHORIZATION_ID__HEADER, request);
+        String memberIdx = resolveHeader(AUTHORIZATION_ID_HEADER, request);
         String roles = resolveHeader(AUTHORIZATION_ROLE_HEADER, request);
 
         if(StringUtils.hasText(String.valueOf(memberIdx)) && StringUtils.hasText(roles)) {
