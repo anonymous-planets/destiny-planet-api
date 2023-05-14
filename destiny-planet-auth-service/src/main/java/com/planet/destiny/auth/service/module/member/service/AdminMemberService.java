@@ -2,10 +2,14 @@ package com.planet.destiny.auth.service.module.member.service;
 
 
 import com.planet.destiny.auth.service.constant.ErrorCodeAuth;
+import com.planet.destiny.auth.service.exception.member.AdminMemberLoginException;
 import com.planet.destiny.auth.service.exception.member.MemberNotFoundException;
 import com.planet.destiny.auth.service.module.member.item.AdminMemberDto;
+import com.planet.destiny.auth.service.module.member.model.AdminLoginRecordEntity;
+import com.planet.destiny.auth.service.module.member.repository.AdminLoginRecordRepository;
 import com.planet.destiny.core.api.constant.EmailTemplateType;
 import com.planet.destiny.core.api.constant.YesNoType;
+import com.planet.destiny.core.api.constant.member.StatusType;
 import com.planet.destiny.core.api.exception.BadRequestException;
 import com.planet.destiny.core.api.exception.BusinessException;
 import com.planet.destiny.core.api.exception.NotFoundException;
@@ -22,7 +26,10 @@ import com.planet.destiny.core.api.module.sender.model.EmailTemplateEntity;
 import com.planet.destiny.core.api.module.sender.repository.EmailTemplateRepository;
 import com.planet.destiny.core.api.module.sender.service.SenderService;
 import com.planet.destiny.core.api.module.token.item.TokenDto;
+import com.planet.destiny.core.api.utils.DateUtils;
 import com.planet.destiny.core.api.utils.StringUtils;
+import com.planet.destiny.core.api.utils.WebUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +47,8 @@ import java.util.stream.Collectors;
 public class AdminMemberService {
 
     private final AdminMemberRepository adminMemberRepository;
+
+    private final AdminLoginRecordRepository adminLoginRecordRepository;
 
     private final AdminInviteRepository adminInviteRepository;
 
@@ -62,12 +71,42 @@ public class AdminMemberService {
 
 
     @Transactional
-    public RestSingleResponse<AdminMemberDto.LoginRes> login(AdminMemberDto.LoginReq reqDto) {
-        AdminMemberEntity admin = adminMemberRepository.findByMemberId(reqDto.getMemberId()).orElseThrow(() -> new MemberNotFoundException(ErrorCodeAuth.LOGIN_ERROR, "로그인 실패", "아이디가 올바르지 않습니다."));
+    public RestSingleResponse<AdminMemberDto.LoginRes> login(AdminMemberDto.LoginReq reqDto, HttpServletRequest request) {
+        // 아이디 / 비밀번호
+        String ip = WebUtils.getClientIP(request);
+        AdminMemberEntity admin = adminMemberRepository.findByMemberId(reqDto.getMemberId()).orElseThrow(() -> new MemberNotFoundException(ErrorCodeAuth.LOGIN_FAIL, "로그인 실패", "아이디 정보가 잘못되었습니다."));
 
         if(!passwordEncoder.matches(reqDto.getPassword(), admin.getPassword())) {
-            throw new MemberNotFoundException(ErrorCodeAuth.LOGIN_ERROR, "로그인 실패", "비밀빈호가 올바르지 않습니다.");
+            // 잘못된 비밀번호
+            adminLoginRecordRepository.save(
+                AdminLoginRecordEntity
+                    .builder()
+                    .member(admin)
+                    .ip(ip)
+                    .successYn(YesNoType.NO)
+                    .failReason("잘못된 비밀번호 입니다.")
+                    .creator(admin)
+                    .modifier(admin)
+                    .build()
+            );
+            // 비밀번호 틀린횟수
+            long loginFailCount = adminLoginRecordRepository.countByMemberAndSuccessYnAndCreatedDateTimeBetween(admin, YesNoType.NO, DateUtils.getCurrentLocalDateTime(), DateUtils.getBeforeHourLocalDateTime(1L));
+
+            // 비밀번호 틀린 횟수가 5회 이상일 경우 계정 잠금
+            if(loginFailCount >= 5L) {
+                admin.accountBlock();
+                adminMemberRepository.save(admin);
+            }
+            throw new AdminMemberLoginException(ErrorCodeAuth.LOGIN_FAIL);
         }
+
+        // 계정 활성 상태가 아닐 경우
+        if(admin.getStatus() != StatusType.ACTIVE) {
+            throw new AdminMemberLoginException(ErrorCodeAuth.LOGIN_FAIL_ACCOUNT_LOCK);
+        }
+
+
+
 
         TokenDto.TokenRes token = tokenService.adminTokenIssue(TokenDto.TokenIssueReq.builder().memberIdx(admin.getIdx()).roles(admin.getRoles().stream().map(item -> item.getRole().getRole()).collect(Collectors.toSet())).build());
 

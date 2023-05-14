@@ -17,4 +17,5 @@ public class MemberNotFoundException extends NotFoundException {
     public MemberNotFoundException(ErrorCodeType errorCode, String title, String message) {
         super(errorCode, title, message);
     }
+
 }

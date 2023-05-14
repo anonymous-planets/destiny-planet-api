@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -58,14 +59,14 @@ public class AdminMemberEntity implements Serializable {
     @Column(name = "creator_idx", columnDefinition = "VARCHAR(30) NOT NULL COMMENT '회원 이름'")
     private Long creator;
 
-    @Column(name = "created_date_time", columnDefinition = "VARCHAR(30) NOT NULL COMMENT '회원 이름'")
-    private Date createdDateTime;
+    @Column(name = "created_date_time", columnDefinition = "DATETIME NOT NULL COMMENT '회원 이름'")
+    private LocalDateTime createdDateTime;
 
     @Column(name = "modifier_idx", columnDefinition = "VARCHAR(30) NOT NULL COMMENT '회원 이름'")
     private Long modifier;
 
     @Column(name = "modified_date_time", columnDefinition = "VARCHAR(30) NOT NULL COMMENT '회원 이름'")
-    private Date modifiedDateTime;
+    private LocalDateTime modifiedDateTime;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "admin")
     private Set<AdminRoleEntity> roles;
@@ -75,7 +76,7 @@ public class AdminMemberEntity implements Serializable {
     public AdminMemberEntity(Long idx, String memberId, String password, String name
             , String phone, String nickName, String birthday, String emailAddr
             , StatusType status, Date lastPwdInitDate, Date lastLoginDate, Long creator
-            , Date createdDateTime, Long modifier, Date modifiedDateTime) {
+            , LocalDateTime createdDateTime, Long modifier, LocalDateTime modifiedDateTime) {
         this.idx = idx;
         this.memberId = memberId;
         this.password = password;
@@ -93,4 +94,8 @@ public class AdminMemberEntity implements Serializable {
         this.modifiedDateTime = modifiedDateTime;
     }
 
+
+    public void accountBlock() {
+        this.status = StatusType.LOCK;
+    }
 }

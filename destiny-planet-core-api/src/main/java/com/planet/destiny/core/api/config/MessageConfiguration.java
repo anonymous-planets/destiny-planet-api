@@ -11,6 +11,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.web.servlet.LocaleResolver;
 
 import java.time.Duration;
+import java.util.Locale;
 
 
 @Slf4j
@@ -29,8 +30,11 @@ public class MessageConfiguration {
     // Encoding 형식
     messageSource.setDefaultEncoding("UTF-8");
 
+    // 기본 Locale
+    messageSource.setDefaultLocale(Locale.getDefault());
+
     // Reload시간
-    messageSource.setCacheSeconds(10 * 60);
+    messageSource.setCacheSeconds(60 * 60 * 5);
 
     // locale에 해당하는 file이 없을 경우 System locale을 사용
     messageSource.setFallbackToSystemLocale(false);

@@ -13,14 +13,18 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.annotation.PostConstruct;
+import java.util.TimeZone;
+
 @Configuration
 public class BeanConfiguration {
 
-//    @Bean
-//    public JavaMailSender javaMailSender() {
-//        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-//        return javaMailSender;
-//    }
+
+
+    @PostConstruct
+    public void settingTimezone() {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+    }
 
 
     @Bean

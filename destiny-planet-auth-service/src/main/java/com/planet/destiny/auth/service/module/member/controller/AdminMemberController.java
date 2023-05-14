@@ -3,6 +3,8 @@ package com.planet.destiny.auth.service.module.member.controller;
 
 import com.planet.destiny.auth.service.module.member.item.AdminMemberDto;
 import com.planet.destiny.auth.service.module.member.service.AdminMemberService;
+import com.planet.destiny.core.api.utils.WebUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +29,8 @@ public class AdminMemberController {
      * @return
      */
     @PostMapping(value = "/login")
-    public ResponseEntity login(@Validated @RequestBody AdminMemberDto.LoginReq reqDto) {
-        return ResponseEntity.ok(adminMemberService.login(reqDto));
+    public ResponseEntity login(@Validated @RequestBody AdminMemberDto.LoginReq reqDto, HttpServletRequest request) {
+        return ResponseEntity.ok(adminMemberService.login(reqDto, request));
     }
 
     /**

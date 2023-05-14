@@ -63,4 +63,13 @@ public class StringUtils {
             return null;
         }
     }
+
+
+    /**
+     * 랜덤 비밀번호 생성
+     * @return
+     */
+    public static String randomPassword() {
+        return "";
+    }
 }

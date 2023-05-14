@@ -8,8 +8,6 @@ import java.util.function.Function;
 
 public class CustomCookieLocaleResolver extends CookieLocaleResolver {
 
-
-  // TODO: 수정 필요 - LOCALE정보가 쿠키에 저장이 안됨
   @Override
   public void setDefaultLocaleFunction(Function<HttpServletRequest, Locale> defaultLocaleFunction) {
     defaultLocaleFunction = request -> {
